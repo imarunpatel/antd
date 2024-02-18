@@ -5,11 +5,12 @@ import { useState } from "react";
 const FileUpload = ({ show, onClose, uploadedFiles }) => {
 
 
-    console.log('uploadedfile', uploadedFiles)
+    // console.log('uploadedfile', uploadedFiles)
 
   const [files, setFiles] = useState([]);
 
   const beforeUpload = (file) => {
+
     const isDuplicate = files.some(existingFile => existingFile.name === file.name);
 
     if(isDuplicate) {
@@ -18,7 +19,6 @@ const FileUpload = ({ show, onClose, uploadedFiles }) => {
     }
 
     setFiles([...files, file])
-    // console.log("before upload", file);
     return false;
   };
 
@@ -27,7 +27,6 @@ const FileUpload = ({ show, onClose, uploadedFiles }) => {
   };
 
   const handleFileRemove = (file) => {
-    // console.log('removed file', file);
     const newFileList = files.filter(item => item.uid !== file.uid);
     setFiles(newFileList);
   }
@@ -36,11 +35,13 @@ const FileUpload = ({ show, onClose, uploadedFiles }) => {
       <h1>File Upload</h1>
       <Modal open={show} title="Upload documents." onCancel={onClose} onOk={handleSubmit}>
         <Upload
+            fileList={files}
           name="file"
-          multiple={true}
+          multiple={false}
           accept="pdf"
           beforeUpload={beforeUpload}
           onRemove={handleFileRemove}
+          showUploadList={{ showRemoveIcon: true }}
         >
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
