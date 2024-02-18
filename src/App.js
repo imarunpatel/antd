@@ -7,7 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSessionDialog } from "./store/sessionDialogSlice";
 import { Dropdown, Input, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import FileUpload from "./components/FileUpload";
 
+const uploadedFilesData = [
+  'file1',
+  'file2',
+  'file3',
+  'file4'
+]
 function App() {
   const items = [
     {
@@ -33,6 +40,8 @@ function App() {
   ];
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState(items);
+  const [showUpload, setShowUpload]  = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState(uploadedFilesData);
 
   const dispatch = useDispatch();
   const sessionDialog = useSelector((state) => state.sessionDialog);
@@ -44,6 +53,7 @@ function App() {
   const handleLinkClick = (props) => {
     console.log("hi...", props);
   };
+
 
   useEffect(() => {
     (async function () {
@@ -68,6 +78,13 @@ function App() {
     console.log(value, temp);
     setSuggestions(temp);
   };
+
+  const handleFileChange = () => {
+    
+    // let upldatedList = setUploadedFiles;
+    // console.log(upldatedList)
+    setUploadedFiles([]);
+  }
 
   return (
     <div className="App">
@@ -94,7 +111,14 @@ function App() {
               </Space>
             </a>
           </Dropdown>
+
+            
+
           <InfoDialog show={sessionDialog.show} />
+              <button onClick={handleFileChange}>Change File list</button>
+          <br></br>
+          <button onClick={() => setShowUpload(true)}>Upload Files</button>
+          <FileUpload show={showUpload} onClose={() => setShowUpload(false)} uploadedFiles={uploadedFiles} />
         </div>
       </div>
     </div>
